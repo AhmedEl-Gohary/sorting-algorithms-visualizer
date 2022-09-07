@@ -1,16 +1,22 @@
 import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import javax.swing.*;
 
 public class Visualizer extends JFrame {
 	
-	int WIDTH = 1620;
-	int HEIGHT = 1200;
+	public static final int WIDTH = 1620;
+	public static final int HEIGHT = 1200;
+	public static boolean sorted = false;
 	JLabel title, name, timeComplexity, spaceComplexity;
+	JButton shuffle, visualize;
+	JComboBox<String> algorithms;
+	String sortingAlgo;
 	Dimension titleSize, tcSize, scSize;
-	JPanel mainPanel;
+	JPanel mainPanel = new JPanel();
+	ArrayList<Integer> heights = generateArr();
+	DrawRect rectArr = new DrawRect(heights);
 	
 	
 	public Visualizer() throws InterruptedException {
@@ -22,18 +28,14 @@ public class Visualizer extends JFrame {
 		this.setSize(WIDTH, HEIGHT);
 		
 		// Panels
-		mainPanel = new JPanel();
 		mainPanel.setBackground(new Color(64, 64, 64));
 		mainPanel.setBounds(0, 0, WIDTH, 230);
-		ArrayList<Integer> heights = this.generateArr();
+		mainPanel.setLayout(null);
 		
-		
-		DrawRect rectArr = new DrawRect(heights);
 		rectArr.setBackground(new Color(64, 64, 64));
 		rectArr.setBounds(0, 230, WIDTH, 900);
 		
-		BubbleSort bs = new BubbleSort();
-		heights = bs.sort(heights, rectArr);
+		
 		
 		// Displayed Labels
 		title = new JLabel("Sorting Algorithms Visualizer");
@@ -41,6 +43,11 @@ public class Visualizer extends JFrame {
 		titleSize = title.getPreferredSize();
 		title.setBounds(440, 20, titleSize.width + 545, titleSize.height + 65);
 		title.setFont(new Font("Panton", Font.BOLD, 44));
+		
+		name = new JLabel("Developed by: Ahmed El-Gohary");
+		name.setForeground(Color.WHITE);
+		name.setBounds(600, 100, 545, 65);
+		name.setFont(new Font("Panton", Font.BOLD, 24));
 		
 		timeComplexity = new JLabel("Time Complexity: ");
 		timeComplexity.setForeground(Color.WHITE);
@@ -55,13 +62,74 @@ public class Visualizer extends JFrame {
 		spaceComplexity.setFont(new Font("MV Boli", Font.BOLD, 22));
 		
 		
+		// Buttons
+		String[] sorting = {"Select Algorithm", "Bubble Sort", "Quick Sort", "Insertion Sort", "Merge Sort"};
+		algorithms = new JComboBox<String>(sorting);
+		algorithms.setBounds(1320, 30, 280, 40);
+		algorithms.setFont(new Font("MV Boli", Font.BOLD, 26));
+		
+		visualize = new JButton("Visualize");
+		visualize.setBounds(1370, 90, 200, 40);
+		visualize.setFont(new Font("MV Boli", Font.BOLD, 26));
+		
+		shuffle = new JButton("Shuffle");
+		shuffle.setBounds(1370, 150, 200, 40);
+		shuffle.setFont(new Font("MV Boli", Font.BOLD, 26));
+		
+		mainPanel.add(algorithms);
+		mainPanel.add(visualize);
+		mainPanel.add(shuffle);
 		mainPanel.add(title);
+		mainPanel.add(name);
 		mainPanel.add(timeComplexity);
 		mainPanel.add(spaceComplexity);
-		mainPanel.setLayout(new BorderLayout());
+		
 		this.add(mainPanel);
 		this.add(rectArr);
+		this.validate();
 		this.setVisible(true);
+		
+		BubbleSort bs = new BubbleSort();
+		bs.sort(heights, rectArr);
+	/*	
+		// Event Handling
+		BubbleSort bs = new BubbleSort();
+		algorithms.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent ie) {
+				sortingAlgo = (String) algorithms.getSelectedItem();
+			}
+			
+		});
+		
+		visualize.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (sortingAlgo.equals(sorting[1])) {
+					try {
+						bs.sort(heights, rectArr);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+				} else if (sortingAlgo.equals(sorting[2])){
+					
+				} else if (sortingAlgo.equals(sorting[3])) {
+					
+				} else if (sortingAlgo.equals(sorting[4])) {
+					
+				} 
+			}
+		});
+		shuffle.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				heights = generateArr();
+				rectArr.setArr(heights);
+				repaint();
+			}
+		});
+		
+		*/
 	}
 	public ArrayList<Integer> generateArr() {
 		ArrayList<Integer> arr = new ArrayList<>();
@@ -71,4 +139,5 @@ public class Visualizer extends JFrame {
 		System.out.println(arr);
 		return arr;
 	}
+	
 }
