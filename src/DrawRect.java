@@ -11,17 +11,21 @@ public class DrawRect extends JPanel {
 	ArrayList<Integer> arr;
 	
 	public DrawRect(ArrayList<Integer> heights) {
+		// Shallow Cloning
 		arr = heights;
 	}
+	
+	// Changing the instance variable so that paint component is called
 	public void setArr(ArrayList<Integer> newArr) {
 		arr = newArr;
-	}	
+	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D graphics = (Graphics2D) g;
 		super.paintComponent(graphics);
 		graphics.setColor(RECT_COLOR);
-		for (int i = 0, x = 5; x <= 1600; x += WIDTH + 5, i++) {
+		for (int i = 0, x = 10; x <= 1580; x += WIDTH + 4, i++) {
 			int y = arr.get(i);
 			graphics.fillRect(x, y, WIDTH, HEIGHT);
 		}
