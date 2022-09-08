@@ -21,6 +21,7 @@ public class Visualizer extends JFrame implements ActionListener {
 	
 	// TODO: complete Initialization of sorting Algorithms
 	BubbleSort bs = new BubbleSort();
+	HeapSort hs = new HeapSort();
 	
 	public Visualizer() throws InterruptedException {
 		// Frame variables
@@ -70,7 +71,7 @@ public class Visualizer extends JFrame implements ActionListener {
 		
 		
 		// Drop-down menu
-		algorithms = new JComboBox<String>(new String[]{"Select Algorithm", "Bubble Sort", "Quick Sort", "Insertion Sort", "Merge Sort"});
+		algorithms = new JComboBox<String>(new String[]{"Select Algorithm", "Bubble Sort", "Heap Sort", "Insertion Sort", "Merge Sort"});
 		algorithms.setBounds(1320, 30, 280, 40);
 		algorithms.setFont(new Font("MV Boli", Font.BOLD, 26));
 		
@@ -126,10 +127,10 @@ public class Visualizer extends JFrame implements ActionListener {
 				timeComplexity.setText("Time Complexity: O(n^2)");
 				spaceComplexity.setText("Space Complexity: O(1)");
 				comparisons.setText("No. of Comparisons: " + noOfComparisons);
-			} else if (algorithms.getSelectedItem() == "Quick Sort") {
-				sortingAlgo = 'q';
+			} else if (algorithms.getSelectedItem() == "Heap Sort") {
+				sortingAlgo = 'h';
 				timeComplexity.setText("Time Complexity: O(nlog(n))");
-				spaceComplexity.setText("Space Complexity: O(log(n))");
+				spaceComplexity.setText("Space Complexity: O(1)");
 				comparisons.setText("No. of Comparisons: " + noOfComparisons);
 			} else if (algorithms.getSelectedItem() == "Insertion Sort") {
 				sortingAlgo = 'i';
@@ -152,9 +153,9 @@ public class Visualizer extends JFrame implements ActionListener {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-			} else if (sortingAlgo == 'q') {
+			} else if (sortingAlgo == 'h') {
 				try {
-					bs.sort(heights, rectArr, this);
+					hs.sort(heights, rectArr, this);
 					sorted = true;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
