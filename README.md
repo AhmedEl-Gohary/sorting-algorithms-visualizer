@@ -1,7 +1,7 @@
 # Sorting Algorithms Visualizer
 A visualization tool for different sorting algorithms including Merge Sort, Heap Sort, Insertion Sort and Bubble Sort
 
-![app](Visualizer.png)
+![visualizer](vis.png)
 
 ## Installation
 ### Linux (Ubuntu)
