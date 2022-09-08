@@ -20,11 +20,12 @@ public class BubbleSort {
 		            vis.setSize(Visualizer.WIDTH, (int) (Visualizer.HEIGHT + increment));
 		            increment = -increment;
 				}
-				//System.out.println(arr);
+				System.out.println(arr);
 			}
 			if (!swapped) break;
 		}
 		vis.comparisons.setText("No. of Comparisons: " + Visualizer.noOfComparisons);
+		Visualizer.noOfComparisons = 0;
 	}
 
 } 
