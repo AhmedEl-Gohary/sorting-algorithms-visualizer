@@ -3,7 +3,7 @@ import java.util.Collections;
 
 public class BubbleSort {
 	
-	double inc = 0.05;
+	double increment = 0.05;
 	// Sorting in non-increasing order of Y coordinates so that it sorted visually
 	public void sort(ArrayList<Integer> arr, DrawRect rectArr, Visualizer vis) throws InterruptedException {
 		boolean swapped;
@@ -17,8 +17,8 @@ public class BubbleSort {
 					Thread.sleep(30);
 					rectArr.setArr(arr);					
 		            rectArr.paintImmediately(0, 230, Visualizer.WIDTH, 900);
-		            vis.setSize(Visualizer.WIDTH, (int) (Visualizer.HEIGHT + inc));
-		            inc = -inc;
+		            vis.setSize(Visualizer.WIDTH, (int) (Visualizer.HEIGHT + increment));
+		            increment = -increment;
 				}
 				//System.out.println(arr);
 			}
