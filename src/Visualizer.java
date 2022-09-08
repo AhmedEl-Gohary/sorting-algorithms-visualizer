@@ -22,6 +22,8 @@ public class Visualizer extends JFrame implements ActionListener {
 	// TODO: complete Initialization of sorting Algorithms
 	BubbleSort bs = new BubbleSort();
 	HeapSort hs = new HeapSort();
+	InsertionSort is = new InsertionSort();
+	MergeSort ms = new MergeSort();
 	
 	public Visualizer() throws InterruptedException {
 		// Frame variables
@@ -162,15 +164,16 @@ public class Visualizer extends JFrame implements ActionListener {
 				}
 			} else if (sortingAlgo == 'i') {
 				try {
-					bs.sort(heights, rectArr, this);
+					is.sort(heights, rectArr, this);
 					sorted = true;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			} else if (sortingAlgo == 'm') {
 				try {
-					bs.sort(heights, rectArr, this);
+					ms.sort(heights, 0, heights.size() - 1, rectArr, this);
 					sorted = true;
+					noOfComparisons = 0;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
