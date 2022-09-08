@@ -4,27 +4,29 @@ import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.*;
 
-public class Visualizer extends JFrame {
+public class Visualizer extends JFrame implements ActionListener {
 	
 	public static final int WIDTH = 1620;
 	public static final int HEIGHT = 1200;
 	public static boolean sorted = false;
-	JLabel title, name, timeComplexity, spaceComplexity;
+	public static char sortingAlgo;
+	public static int noOfComparisons = 0;
+	JLabel title, name, timeComplexity, spaceComplexity, comparisons;
 	JButton shuffle, visualize;
 	JComboBox<String> algorithms;
-	String sortingAlgo;
 	Dimension titleSize, tcSize, scSize;
 	JPanel mainPanel = new JPanel();
 	ArrayList<Integer> heights = generateArr();
 	DrawRect rectArr = new DrawRect(heights);
 	
+	// TODO: complete Initialization of sorting Algorithms
+	BubbleSort bs = new BubbleSort();
 	
 	public Visualizer() throws InterruptedException {
 		// Frame variables
 		this.setTitle("Sorting Algorithms Visualizer");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBackground(Color.WHITE);
-		this.setResizable(false);
 		this.setSize(WIDTH, HEIGHT);
 		
 		// Panels
@@ -46,36 +48,42 @@ public class Visualizer extends JFrame {
 		
 		name = new JLabel("Developed by: Ahmed El-Gohary");
 		name.setForeground(Color.WHITE);
-		name.setBounds(600, 100, 545, 65);
-		name.setFont(new Font("Panton", Font.BOLD, 24));
+		name.setBounds(580, 100, 545, 65);
+		name.setFont(new Font("Panton", Font.BOLD, 26));
 		
 		timeComplexity = new JLabel("Time Complexity: ");
 		timeComplexity.setForeground(Color.WHITE);
 		tcSize = timeComplexity.getPreferredSize();
-		timeComplexity.setBounds(10, 20, tcSize.width + 150, tcSize.height + 50);
+		timeComplexity.setBounds(10, 20, tcSize.width + 300, tcSize.height + 50);
 		timeComplexity.setFont(new Font("MV Boli", Font.BOLD, 22));
 		
 		spaceComplexity = new JLabel("Space Complexity: ");
 		spaceComplexity.setForeground(Color.WHITE);
 		scSize = spaceComplexity.getPreferredSize();
-		spaceComplexity.setBounds(0, 70, scSize.width + 150, scSize.height + 50);
+		spaceComplexity.setBounds(10, 70, scSize.width + 300, scSize.height + 50);
 		spaceComplexity.setFont(new Font("MV Boli", Font.BOLD, 22));
 		
+		comparisons = new JLabel("No. of Comparisons: ");
+		comparisons.setForeground(Color.WHITE);
+		comparisons.setBounds(10, 95, 400, 120);
+		comparisons.setFont(new Font("MV Boli", Font.BOLD, 22));
 		
-		// Buttons
-		String[] sorting = {"Select Algorithm", "Bubble Sort", "Quick Sort", "Insertion Sort", "Merge Sort"};
-		algorithms = new JComboBox<String>(sorting);
+		
+		// Drop-down menu
+		algorithms = new JComboBox<String>(new String[]{"Select Algorithm", "Bubble Sort", "Quick Sort", "Insertion Sort", "Merge Sort"});
 		algorithms.setBounds(1320, 30, 280, 40);
 		algorithms.setFont(new Font("MV Boli", Font.BOLD, 26));
 		
+		// Buttons
 		visualize = new JButton("Visualize");
-		visualize.setBounds(1370, 90, 200, 40);
+		visualize.setBounds(1360, 90, 200, 40);
 		visualize.setFont(new Font("MV Boli", Font.BOLD, 26));
 		
 		shuffle = new JButton("Shuffle");
-		shuffle.setBounds(1370, 150, 200, 40);
+		shuffle.setBounds(1360, 150, 200, 40);
 		shuffle.setFont(new Font("MV Boli", Font.BOLD, 26));
 		
+		// Adding labels to the main panel
 		mainPanel.add(algorithms);
 		mainPanel.add(visualize);
 		mainPanel.add(shuffle);
@@ -83,54 +91,22 @@ public class Visualizer extends JFrame {
 		mainPanel.add(name);
 		mainPanel.add(timeComplexity);
 		mainPanel.add(spaceComplexity);
+		mainPanel.add(comparisons);
 		
+		// Adding panels to the frame
 		this.add(mainPanel);
 		this.add(rectArr);
 		this.validate();
 		this.setVisible(true);
 		
-		BubbleSort bs = new BubbleSort();
-		bs.sort(heights, rectArr);
-	/*	
-		// Event Handling
-		BubbleSort bs = new BubbleSort();
-		algorithms.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent ie) {
-				sortingAlgo = (String) algorithms.getSelectedItem();
-			}
-			
-		});
-		
-		visualize.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (sortingAlgo.equals(sorting[1])) {
-					try {
-						bs.sort(heights, rectArr);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-				} else if (sortingAlgo.equals(sorting[2])){
-					
-				} else if (sortingAlgo.equals(sorting[3])) {
-					
-				} else if (sortingAlgo.equals(sorting[4])) {
-					
-				} 
-			}
-		});
-		shuffle.addActionListener(new ActionListener() {	
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				heights = generateArr();
-				rectArr.setArr(heights);
-				repaint();
-			}
-		});
-		
-		*/
+		// Handling User Input
+		Visualizer handler = this;
+		algorithms.addActionListener(handler);
+		visualize.addActionListener(handler);
+		shuffle.addActionListener(handler);
 	}
+	
+	// Generating a new shuffled array
 	public ArrayList<Integer> generateArr() {
 		ArrayList<Integer> arr = new ArrayList<>();
 		for (int y = 1100; y >= 265; y -= 18)
@@ -138,6 +114,75 @@ public class Visualizer extends JFrame {
 		Collections.shuffle(arr);
 		System.out.println(arr);
 		return arr;
+	}
+	
+	// Event Handling
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		if (event.getSource() == algorithms) {
+			noOfComparisons = 0;
+			if (algorithms.getSelectedItem() == "Bubble Sort") {
+				sortingAlgo = 'b';
+				timeComplexity.setText("Time Complexity: O(n^2)");
+				spaceComplexity.setText("Space Complexity: O(1)");
+				comparisons.setText("No. of Comparisons: " + noOfComparisons);
+			} else if (algorithms.getSelectedItem() == "Quick Sort") {
+				sortingAlgo = 'q';
+				timeComplexity.setText("Time Complexity: O(nlog(n))");
+				spaceComplexity.setText("Space Complexity: O(log(n))");
+				comparisons.setText("No. of Comparisons: " + noOfComparisons);
+			} else if (algorithms.getSelectedItem() == "Insertion Sort") {
+				sortingAlgo = 'i';
+				timeComplexity.setText("Time Complexity: O(n^2)");
+				spaceComplexity.setText("Space Complexity: O(1)");
+				comparisons.setText("No. of Comparisons: " + noOfComparisons);
+			} else if (algorithms.getSelectedItem() == "Merge Sort") {
+				sortingAlgo = 'm';
+				timeComplexity.setText("Time Complexity: O(nlog(n))");
+				spaceComplexity.setText("Space Complexity: O(n)");
+				comparisons.setText("No. of Comparisons: " + noOfComparisons);
+			} else {
+				sortingAlgo = 'x';
+			}
+		} else if (event.getSource() == visualize && !sorted) {
+			if (sortingAlgo == 'b') {
+				try {
+					bs.sort(heights, rectArr, this);
+					sorted = true;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} else if (sortingAlgo == 'q') {
+				try {
+					bs.sort(heights, rectArr, this);
+					sorted = true;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} else if (sortingAlgo == 'i') {
+				try {
+					bs.sort(heights, rectArr, this);
+					sorted = true;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} else if (sortingAlgo == 'm') {
+				try {
+					bs.sort(heights, rectArr, this);
+					sorted = true;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		} else if (event.getSource() == shuffle) {
+			heights = generateArr();
+			rectArr.removeAll();
+			rectArr.setArr(heights);
+			rectArr.revalidate();
+            rectArr.paintImmediately(0, 230, WIDTH, 900);
+            sorted = false;
+		} 
+		
 	}
 	
 }
