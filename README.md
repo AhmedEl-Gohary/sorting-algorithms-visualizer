@@ -26,7 +26,7 @@ sudo apt install openjdk-18-jre-headless  # version 18~36ea-1
 sudo apt install openjdk-8-jre-headless   # version 8u312-b07-0ubuntu1
 ```
 
-Execute the following command to install the JRE from OpenJDK 11:
+Execute the following command to install the JDK:
 ```bash
 sudo apt install default-jdk
 ```
