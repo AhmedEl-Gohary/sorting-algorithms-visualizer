@@ -1,6 +1,8 @@
 # Sorting Algorithms Visualizer
 A visualization tool for different sorting algorithms including Merge Sort, Heap Sort, Insertion Sort and Bubble Sort
 
+You can see it in action [here](https://www.youtube.com/watch?v=N3b7arzxR3k)
+
 ![visualizer](vis.png)
 
 ## Installation
